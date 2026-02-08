@@ -3,17 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Propose Day ❤️</title>
+<title>For My Love ❤️</title>
 
 <style>
-    /* Reset & Base Styles */
-    * {
-        box-sizing: border-box;
-    }
+    /* --- RESET & BASICS --- */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-        margin: 0;
-        padding: 0;
         height: 100vh;
         height: 100dvh; /* Mobile viewport fix */
         background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
@@ -21,47 +17,36 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden; /* LOCKS THE PAGE SCROLL */
+        overflow: hidden; /* Lock body scroll */
     }
 
-    /* Floating Hearts Background */
+    /* --- FLOATING HEARTS BG --- */
     #hearts-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 0;
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none; z-index: 0;
     }
-
     .heart-bg {
-        position: absolute;
-        color: #fff;
-        opacity: 0.3;
+        position: absolute; color: #fff; opacity: 0.3;
         animation: floatUp 6s linear infinite;
     }
-
     @keyframes floatUp {
         0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
         50% { opacity: 0.6; }
         100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
     }
 
-    /* Main Card */
+    /* --- MAIN CARD --- */
     .container {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
         padding: 20px;
         border-radius: 20px;
         width: 90%;
         max-width: 380px;
-        /* Ensure card fits on small screens without scrolling the body */
-        max-height: 90vh; 
+        max-height: 95vh;
         display: flex;
         flex-direction: column;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         text-align: center;
         position: relative;
         z-index: 10;
@@ -69,13 +54,12 @@
 
     h1 {
         color: #ff4d6d;
-        margin: 0 0 10px 0;
+        margin-bottom: 10px;
         font-size: 24px;
         font-weight: 700;
-        flex-shrink: 0; /* Keeps title from shrinking */
     }
 
-    /* THE SCROLLABLE LETTER BOX */
+    /* --- SCROLLABLE LETTER --- */
     .message-box {
         background: #fff0f3;
         border: 1px solid #ffccd5;
@@ -86,82 +70,56 @@
         font-size: 16px;
         color: #444;
         line-height: 1.5;
-        white-space: pre-line; 
-        
-        /* THIS CREATES THE SCROLL */
-        overflow-y: auto; 
-        max-height: 35vh; /* Takes up 35% of screen height max */
-        min-height: 100px;
-        
-        /* Smooth scrolling */
+        white-space: pre-line;
+        overflow-y: auto;       /* Enables Scroll */
+        max-height: 30vh;       /* Limits height so page fits */
         scroll-behavior: smooth;
     }
+    
+    /* Scrollbar styling */
+    .message-box::-webkit-scrollbar { width: 5px; }
+    .message-box::-webkit-scrollbar-track { background: transparent; }
+    .message-box::-webkit-scrollbar-thumb { background: #ffb3c1; border-radius: 10px; }
 
-    /* Custom Scrollbar for style */
-    .message-box::-webkit-scrollbar {
-        width: 6px;
-    }
-    .message-box::-webkit-scrollbar-track {
-        background: #fff0f3;
-    }
-    .message-box::-webkit-scrollbar-thumb {
-        background: #ffb3c1; 
-        border-radius: 10px;
-    }
-
-    /* Image Container */
+    /* --- GIF AREA --- */
     .gif-container {
         width: 100%;
-        height: 150px; /* Fixed height for image area */
-        flex-shrink: 0;
+        height: 140px;
         border-radius: 12px;
         overflow: hidden;
         margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f0f0f0;
+        flex-shrink: 0;
     }
-    
     .gif-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        width: 100%; height: 100%; object-fit: cover;
     }
 
-    /* Buttons Area */
+    /* --- BUTTONS --- */
     .btn-group {
-        width: 100%;
-        height: 50px;
         display: flex;
-        justify-content: center;
-        gap: 15px;
-        flex-shrink: 0;
-        position: relative; /* Anchor for absolute positioning if needed */
+        justify-content: space-between; /* Side by side */
+        gap: 10px;
+        width: 100%;
     }
 
     button {
-        padding: 10px 24px;
+        padding: 12px 0;
         border: none;
         border-radius: 50px;
         font-size: 16px;
         font-weight: 700;
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition: transform 0.2s;
+        width: 48%; /* Each button takes almost half width */
         -webkit-tap-highlight-color: transparent;
-        outline: none;
     }
-
-    button:active {
-        transform: scale(0.95);
-    }
+    
+    button:active { transform: scale(0.95); }
 
     #startBtn {
+        width: 100%;
         background: linear-gradient(to right, #ff758c, #ff7eb3);
         color: white;
-        width: 100%;
-        padding: 15px;
-        font-size: 18px;
         box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
     }
 
@@ -176,15 +134,14 @@
         background: #eb3b5a;
         color: white;
         box-shadow: 0 4px 10px rgba(235, 59, 90, 0.3);
-        position: absolute; /* Allows it to fly freely */
-        z-index: 100; /* Must be on top */
+        z-index: 100;
+        position: relative; /* CRITICAL: Starts in normal position */
+        transition: top 0.1s, left 0.1s;
     }
 
-    .hidden { display: none; }
-
+    .hidden { display: none !important; }
 </style>
 </head>
-
 <body>
 
 <iframe id="music" allow="autoplay" style="display:none"></iframe>
@@ -195,7 +152,7 @@
 
     <button id="startBtn">Open Letter 💌</button>
 
-    <div id="content" class="hidden" style="width: 100%; display: flex; flex-direction: column;">
+    <div id="content" class="hidden">
         
         <div class="message-box" id="typingText"></div>
 
@@ -238,19 +195,18 @@ Ki tu ban jaye kismat hamari... ✨
 Viku is asking you formally...
 Will you be mine? 💍`;
 
+// THE TAUNTS (Pop-ups)
 const taunts = [
     "Socha tha 'No' milega? 😂",
     "Yesterday was enough drama, Aaj sirf YES! 😤",
     "Haath dukh jayenge par button nahi dabega! 😜",
     "Viku doesn't take No for an answer today! 😎",
     "Arey maan bhi jao ab! ❤️",
-    "Error 404: 'No' option not found! 💍",
-    "Try harder! 🤪"
+    "Error 404: 'No' option not found! 💍"
 ];
 let tauntIndex = 0;
 
-// --- FUNCTIONS ---
-
+// --- BACKGROUND HEARTS ---
 function createHearts() {
     const container = document.getElementById('hearts-container');
     const heart = document.createElement('div');
@@ -264,70 +220,65 @@ function createHearts() {
 }
 setInterval(createHearts, 400);
 
-// Typing Effect with Auto-Scroll
+// --- TYPING EFFECT ---
 let charIndex = 0;
 function typeEffect() {
     if (charIndex < message.length) {
         typingText.textContent += message.charAt(charIndex);
         charIndex++;
-        
-        // Auto-scroll to the bottom of the message box
-        typingText.scrollTop = typingText.scrollHeight;
-        
+        typingText.scrollTop = typingText.scrollHeight; // Auto-scroll
         setTimeout(typeEffect, 35); 
     }
 }
 
+// --- START BUTTON ---
 startBtn.onclick = () => {
     startBtn.style.display = "none";
-    content.style.display = "flex"; // Ensure flex display
     content.classList.remove("hidden");
     document.getElementById("mainTitle").innerText = "For My Love ❤️";
-    
-    // Attempt Music
     musicFrame.src = "https://www.youtube.com/embed/Fw07eO22H2A?autoplay=1&loop=1&playlist=Fw07eO22H2A";
-    
     typeEffect();
 };
 
-// "No" Button Logic
-const moveButton = () => {
-    // Get viewport dimensions (Use entire screen)
-    const maxWidth = window.innerWidth - noBtn.offsetWidth - 20; 
+// --- NO BUTTON LOGIC (The Taunt System) ---
+function runAway() {
+    // 1. Calculate safe random position within viewport
+    const maxWidth = window.innerWidth - noBtn.offsetWidth - 20;
     const maxHeight = window.innerHeight - noBtn.offsetHeight - 20;
-
+    
     const randomX = Math.max(10, Math.random() * maxWidth);
     const randomY = Math.max(10, Math.random() * maxHeight);
 
-    noBtn.style.position = "fixed"; // Fixed to screen, not container
+    // 2. Apply Fixed Position (Teleport)
+    noBtn.style.position = "fixed"; 
     noBtn.style.left = randomX + "px";
     noBtn.style.top = randomY + "px";
-};
+}
 
-// Mobile Touch
-noBtn.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    moveButton();
-});
-
-// Desktop Hover
+// Trigger for Desktop (Hover)
 noBtn.addEventListener('mouseover', () => {
-    moveButton();
+    runAway();
 });
 
-// Click/Tap Trap (Taunts)
+// Trigger for Mobile (Touch/Click)
+// We use 'click' so the alert actually fires before the move
 noBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    
+    // 1. TAUNT HER (Pop-up)
     alert(taunts[tauntIndex % taunts.length]);
     tauntIndex++;
-    moveButton();
+    
+    // 2. RUN AWAY AFTER SHE CLOSES ALERT
+    runAway();
 });
 
+// --- YES BUTTON SUCCESS ---
 yesBtn.onclick = () => {
     document.querySelector('.container').innerHTML = `
-        <div style="animation: pop 0.5s ease;">
+        <div>
             <h1 style="color: #ff3b6f; font-size: 28px;">SHE SAID YES! 💍😭</h1>
-            <p style="font-size: 16px; color: #333; margin: 15px 0; line-height: 1.5;">
+            <p style="font-size: 17px; color: #333; margin: 15px 0;">
                 Locking this deal forever! ❤️<br>
                 No returns, no exchanges!<br>
                 <b>I love you infinite!</b>
@@ -336,9 +287,9 @@ yesBtn.onclick = () => {
                  src="https://media.giphy.com/media/T86i6yDyOYz7J6dPhf/giphy.gif">
         </div>
     `;
+    // Faster hearts
     setInterval(createHearts, 100);
 };
-
 </script>
 
 </body>
