@@ -2,49 +2,58 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Propose Day 💍</title>
 
 <style>
+/* Removes the blue tap box on Android/iOS */
+* {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    height: 100vh;
-    /* A more magical, golden-hour sunset gradient for Propose Day */
+    /* dvh handles the mobile address bar appearing/disappearing */
+    height: 100dvh; 
     background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
     font-family: 'Segoe UI', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: hidden; /* Prevents scrolling */
+    position: relative;
 }
 
 .container {
     background: rgba(255, 255, 255, 0.95);
-    padding: 30px;
+    padding: 25px;
     border-radius: 25px;
-    width: 85%;
+    width: 90%; /* Fits all phone widths */
     max-width: 400px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.15);
     text-align: center;
     position: relative;
     z-index: 10;
+    transition: height 0.3s ease;
 }
 
 h1 {
     color: #6a11cb;
-    margin-bottom: 15px;
-    font-size: 28px;
+    margin: 0 0 15px 0;
+    font-size: 26px;
 }
 
 button {
-    padding: 14px 28px;
+    padding: 12px 25px;
     border: none;
     border-radius: 50px;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
-    margin: 10px;
+    margin: 8px;
     font-weight: bold;
-    transition: transform 0.2s, box-shadow 0.2s;
+    touch-action: manipulation; /* Improves touch response */
+    transition: transform 0.1s;
 }
 
 button:active {
@@ -54,6 +63,7 @@ button:active {
 #startBtn {
     background: linear-gradient(to right, #6a11cb, #2575fc);
     color: white;
+    width: 100%; /* Full width button for easy tapping */
     box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
 }
 
@@ -66,8 +76,11 @@ button:active {
 #noBtn {
     background: #dc3545;
     color: white;
-    position: absolute; /* Allows it to move freely */
+    position: absolute; 
     box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+    /* Start it next to the Yes button initially */
+    right: 20px;
+    bottom: 25px; 
 }
 
 .hidden {
@@ -75,33 +88,44 @@ button:active {
 }
 
 .message {
-    font-size: 17px;
+    font-size: 16px;
     color: #333;
-    min-height: 120px;
+    min-height: 100px;
     white-space: pre-line; 
-    line-height: 1.6;
+    line-height: 1.5;
     text-align: left;
-    padding: 10px;
+    padding: 12px;
     background: #f8f9fa;
     border-radius: 15px;
     border: 1px solid #e9ecef;
+    margin-bottom: 10px;
 }
 
 .gif {
     width: 100%;
     border-radius: 15px;
-    margin-top: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 60px; /* Extra space for buttons at bottom */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* Floating Hearts Background Animation */
+/* Button Container for Yes/No */
+.action-area {
+    width: 100%;
+    height: 60px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Floating Hearts */
 .heart {
     position: absolute;
     color: #fff;
     opacity: 0.5;
     animation: float 6s linear infinite;
     z-index: 1;
+    pointer-events: none; /* Clicks pass through hearts */
 }
 
 @keyframes float {
@@ -114,10 +138,7 @@ button:active {
 
 <body>
 
-<iframe id="music" width="0" height="0"
-src="https://www.youtube.com/embed/Fw07eO22H2A?start=0&loop=1&playlist=Fw07eO22H2A"
-frameborder="0" allow="autoplay">
-</iframe>
+<iframe id="music" width="0" height="0" frameborder="0"></iframe>
 
 <div id="hearts-container"></div>
 
@@ -128,12 +149,12 @@ frameborder="0" allow="autoplay">
 
     <div id="content" class="hidden">
         <p class="message" id="typingText"></p>
-
+        
         <img class="gif" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
 
-        <div style="position: relative; height: 80px;"> 
-            <button id="yesBtn">Yes, Forever! 💍</button>
-            <button id="noBtn">No way 🙈</button>
+        <div class="action-area">
+            <button id="yesBtn">Yes! 💍</button>
+            <button id="noBtn">No 🙈</button>
         </div>
     </div>
 </div>
@@ -144,8 +165,9 @@ const content = document.getElementById("content");
 const typingText = document.getElementById("typingText");
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
+const iframe = document.getElementById("music");
 
-// Background hearts effect
+// Heart Animation
 function createHearts() {
     const container = document.getElementById('hearts-container');
     for(let i=0; i<15; i++) {
@@ -160,24 +182,17 @@ function createHearts() {
 }
 createHearts();
 
-// PROPOSE DAY MESSAGE
+// Message Text
 const message = 
 `My Dearest Ras Malai ❤️
 
-Yesterday was about the rose,
-but today is about the heart that holds it.
+Yesterday was roses, today is hearts.
+I don't just want your hand,
+I want your forever.
 
-I don't just want to be your memory,
-I want to be your future.
-I don't just want to hold your hand,
-I want to hold your heart.
+Na chahat sitaron ki,
+Bas tu chahiye... ✨
 
-Na chahat hai sitaron ki,
-Na tamanna hai nazaron ki,
-Bas ek hi dua hai in hothon pe,
-Ki tu ban jaye kismat hamari... ✨
-
-Viku is asking you formally...
 Will you be mine? 💍`;
 
 let index = 0;
@@ -185,8 +200,11 @@ let index = 0;
 startBtn.onclick = () => {
     content.classList.remove("hidden");
     startBtn.style.display = "none";
-    // Try to unmute/play video on interaction if browser blocked autoplay
-    document.querySelector('iframe').src += "&autoplay=1";
+    
+    // iOS Safari requires user interaction to play audio. 
+    // We inject the src HERE so the browser sees it as a response to the click.
+    iframe.src = "https://www.youtube.com/embed/Fw07eO22H2A?autoplay=1&loop=1&playlist=Fw07eO22H2A";
+    
     typeEffect();
 };
 
@@ -208,29 +226,36 @@ yesBtn.onclick = () => {
         </p>
         <img class="gif" src="https://media.giphy.com/media/T86i6yDyOYz7J6dPhf/giphy.gif">
     `;
-    
-    // Confetti effect (simple version using hearts)
     setInterval(createHearts, 300);
 };
 
-// The tricky "No" button logic
+// --- MOBILE OPTIMIZED "NO" BUTTON LOGIC ---
+
+// 1. Calculate Safe Boundaries (so button doesn't go off screen)
 const moveButton = () => {
-    const x = Math.random() * (window.innerWidth - 150);
-    const y = Math.random() * (window.innerHeight - 150);
+    // Get button dimensions
+    const btnWidth = noBtn.offsetWidth; 
+    const btnHeight = noBtn.offsetHeight;
+    
+    // Get screen dimensions minus padding (20px)
+    const maxX = window.innerWidth - btnWidth - 20;
+    const maxY = window.innerHeight - btnHeight - 20;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
     
     noBtn.style.position = "fixed";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+    noBtn.style.left = `${Math.max(10, x)}px`; // Ensure it doesn't hit left edge
+    noBtn.style.top = `${Math.max(10, y)}px`;  // Ensure it doesn't hit top edge
 };
 
-// Works on Desktop (Mouse)
-noBtn.onmouseover = moveButton;
-
-// Works on Mobile (Touch) - crucial!
-noBtn.ontouchstart = (e) => {
-    e.preventDefault(); // Prevents clicking
+// 2. Events for both Touch (Mobile) and Mouse (Desktop)
+noBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // Stop the 'click' from happening
     moveButton();
-};
+});
+
+noBtn.addEventListener('mouseover', moveButton);
 
 </script>
 
