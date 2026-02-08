@@ -3,180 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Propose Day 💍</title>
+<title>Propose Day ❤️</title>
 
 <style>
-/* Reset and Base Styles */
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent; /* Removes blue tap box on Android/iOS */
-}
+    /* Reset & Base Styles */
+    * {
+        box-sizing: border-box;
+    }
 
-body {
-    margin: 0;
-    padding: 0;
-    /* Fix for iPhone height issues (address bar) */
-    min-height: 100vh;
-    min-height: -webkit-fill-available; 
+    body {
+        margin: 0;
+        padding: 0;
+        /* Dynamic Height for Mobile Browsers */
+        min-height: 100vh;
+        min-height: 100dvh; 
+        background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden; /* Prevents scrollbars when button moves */
+    }
+
+    /* Floating Hearts Background */
+    #hearts-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+
+    .heart-bg {
+        position: absolute;
+        color: #fff;
+        opacity: 0.3;
+        animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
+        50% { opacity: 0.6; }
+        100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* Main Card */
+    .container {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        padding: 25px 20px;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 380px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        text-align: center;
+        position: relative;
+        z-index: 10;
+        transition: height 0.3s ease;
+    }
+
+    h1 {
+        color: #ff4d6d;
+        margin: 0 0 15px 0;
+        font-size: 26px;
+        font-weight: 700;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+    }
+
+    /* Buttons */
+    .btn-group {
+        position: relative;
+        margin-top: 15px;
+        height: 60px; /* Space for buttons */
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        -webkit-tap-highlight-color: transparent;
+        outline: none;
+    }
+
+    button:active {
+        transform: scale(0.95);
+    }
+
+    #startBtn {
+        background: linear-gradient(to right, #ff758c, #ff7eb3);
+        color: white;
+        width: 100%;
+        padding: 15px;
+        font-size: 18px;
+        box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
+    }
+
+    #yesBtn {
+        background: #20bf6b;
+        color: white;
+        box-shadow: 0 4px 10px rgba(32, 191, 107, 0.3);
+        z-index: 20;
+    }
+
+    #noBtn {
+        background: #eb3b5a;
+        color: white;
+        box-shadow: 0 4px 10px rgba(235, 59, 90, 0.3);
+        transition: all 0.2s ease; /* Smooth movement */
+        position: absolute;
+        z-index: 30;
+    }
+
+    /* Message Styling */
+    .hidden {
+        display: none;
+    }
+
+    .message {
+        font-size: 16px;
+        color: #444;
+        background: #fff0f3;
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid #ffccd5;
+        text-align: left;
+        line-height: 1.5;
+        white-space: pre-line; /* Preserves newlines in your poem */
+        min-height: 150px;
+        margin-bottom: 10px;
+    }
+
+    .gif-container {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
     
-    /* Magical Gradient */
-    background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+    .gif-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* Success Animation */
+    @keyframes pop {
+        0% { transform: scale(0.8); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
     
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; /* Prevents body scroll, we scroll inside container if needed */
-}
+    .success-content {
+        animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
 
-.container {
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(5px); /* Adds a nice glass effect on iPhones */
-    padding: 25px;
-    border-radius: 24px;
-    width: 88%;
-    max-width: 380px;
-    
-    /* Ensures content fits on small screens */
-    max-height: 90vh;
-    overflow-y: auto; 
-    
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-    text-align: center;
-    position: relative;
-    z-index: 10;
-    transition: all 0.3s ease;
-}
-
-h1 {
-    color: #6a11cb;
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-size: 26px;
-    letter-spacing: -0.5px;
-}
-
-/* Styled Buttons */
-button {
-    padding: 14px 24px;
-    border: none;
-    border-radius: 50px;
-    font-size: 17px;
-    cursor: pointer;
-    margin: 8px;
-    font-weight: 700;
-    transition: transform 0.1s;
-    outline: none;
-    user-select: none; /* Prevents text selection on long press */
-}
-
-button:active {
-    transform: scale(0.96);
-}
-
-#startBtn {
-    background: linear-gradient(to right, #6a11cb, #2575fc);
-    color: white;
-    width: 100%;
-    box-shadow: 0 4px 15px rgba(106, 17, 203, 0.25);
-}
-
-#yesBtn {
-    background: #28a745;
-    color: white;
-    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-    min-width: 120px;
-}
-
-#noBtn {
-    background: #ef4444;
-    color: white;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-    min-width: 100px;
-    /* Important: Absolute initially relative to container button-group */
-    position: absolute; 
-    right: 20px; 
-}
-
-/* Helper Classes */
-.hidden {
-    display: none !important;
-}
-
-.message {
-    font-size: 16px;
-    color: #444;
-    min-height: 100px;
-    white-space: pre-line; 
-    line-height: 1.5;
-    text-align: left;
-    padding: 12px;
-    background: #f3f4f6;
-    border-radius: 12px;
-    margin-bottom: 15px;
-}
-
-.gif {
-    width: 100%;
-    border-radius: 12px;
-    margin-bottom: 15px;
-    display: block;
-}
-
-.btn-group {
-    position: relative;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-/* Background Hearts */
-.heart {
-    position: absolute;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 20px;
-    animation: floatUp linear infinite;
-    z-index: 1;
-    pointer-events: none; /* Clicks pass through */
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
-    20% { opacity: 0.8; }
-    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
-}
 </style>
 </head>
 
 <body>
 
-<iframe id="music" style="display:none"
-src="https://www.youtube.com/embed/Fw07eO22H2A?enablejsapi=1"
-frameborder="0" allow="autoplay">
-</iframe>
+<iframe id="music" allow="autoplay" style="display:none"></iframe>
 
 <div id="hearts-container"></div>
 
 <div class="container">
-    <h1>💍 A Question... 💍</h1>
+    <h1 id="mainTitle">💍 A Question For You...</h1>
 
-    <button id="startBtn">Tap to Open 💌</button>
+    <button id="startBtn">Open Letter 💌</button>
 
     <div id="content" class="hidden">
-        <p class="message" id="typingText"></p>
+        <div class="message" id="typingText"></div>
 
-        <img class="gif" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="Cute Proposal">
+        </div>
 
-        <div class="btn-group"> 
-            <button id="yesBtn">Yes! 💍</button>
+        <div class="btn-group">
+            <button id="yesBtn">YES! 💍</button>
             <button id="noBtn">No 🙈</button>
         </div>
     </div>
 </div>
 
 <script>
+// --- CONFIGURATION ---
 const startBtn = document.getElementById("startBtn");
 const content = document.getElementById("content");
 const typingText = document.getElementById("typingText");
@@ -184,114 +205,137 @@ const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const musicFrame = document.getElementById("music");
 
-// --- Heart Animation ---
-function createHearts() {
-    const container = document.getElementById('hearts-container');
-    for(let i=0; i<20; i++) {
-        setTimeout(() => {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
-            container.appendChild(heart);
-        }, i * 200);
-    }
-}
-createHearts();
-
-// --- Message Config ---
+// YOUR MESSAGE (Do not change)
 const message = 
 `My Dearest Ras Malai ❤️
 
-Yesterday was the Rose, 
-today is the Heart.
+Yesterday was about the rose,
+but today is about the heart that holds it.
 
 I don't just want to be your memory,
 I want to be your future.
+I don't just want to hold your hand,
+I want to hold your heart.
 
 Na chahat hai sitaron ki,
 Na tamanna hai nazaron ki,
 Bas ek hi dua hai in hothon pe,
 Ki tu ban jaye kismat hamari... ✨
 
-Will you be mine forever? 💍`;
+Viku is asking you formally...
+Will you be mine? 💍`;
 
-let index = 0;
+// POP-UP TAUNTS (When she tries to click No)
+const taunts = [
+    "Socha tha 'No' milega? 😂",
+    "Yesterday was enough drama, Aaj sirf YES! 😤",
+    "Haath dukh jayenge par button nahi dabega! 😜",
+    "Viku doesn't take No for an answer today! 😎",
+    "Arey maan bhi jao ab! ❤️",
+    "Error 404: 'No' option not found! 💍"
+];
+let tauntIndex = 0;
 
-// --- Interaction Logic ---
-startBtn.onclick = () => {
-    content.classList.remove("hidden");
-    startBtn.style.display = "none";
+// --- FUNCTIONS ---
+
+// 1. Background Animation
+function createHearts() {
+    const container = document.getElementById('hearts-container');
+    const heart = document.createElement('div');
+    heart.classList.add('heart-bg');
+    heart.innerHTML = Math.random() > 0.5 ? '❤️' : '💍';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+    container.appendChild(heart);
     
-    // Attempt to play music by reloading iframe with autoplay on click
-    musicFrame.src = musicFrame.src + "&autoplay=1&loop=1";
+    setTimeout(() => { heart.remove(); }, 6000);
+}
+setInterval(createHearts, 400);
+
+// 2. Typing Effect
+let charIndex = 0;
+function typeEffect() {
+    if (charIndex < message.length) {
+        typingText.textContent += message.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeEffect, 35); 
+    }
+}
+
+// 3. Start Interaction
+startBtn.onclick = () => {
+    startBtn.style.display = "none";
+    content.classList.remove("hidden");
+    document.getElementById("mainTitle").innerText = "For My Love ❤️";
+    
+    // Attempt to play music
+    musicFrame.src = "https://www.youtube.com/embed/Fw07eO22H2A?autoplay=1&loop=1&playlist=Fw07eO22H2A";
     
     typeEffect();
 };
 
-function typeEffect() {
-    if (index < message.length) {
-        typingText.innerHTML += message.charAt(index);
-        index++;
-        // Faster typing speed for mobile attention spans
-        setTimeout(typeEffect, 30); 
-    }
-}
+// 4. "No" Button Logic (The Trap)
+const moveButton = () => {
+    // Get viewport dimensions
+    const maxWidth = window.innerWidth - noBtn.offsetWidth - 20; // 20px padding
+    const maxHeight = window.innerHeight - noBtn.offsetHeight - 20;
 
-yesBtn.onclick = () => {
-    content.innerHTML = `
-        <h1 style="color: #ff3b6f;">SHE SAID YES! 💍😭</h1>
-        <p class="message" style="text-align: center; font-weight: bold;">
-            Locking this deal forever! ❤️<br>
-            No returns, no exchanges!<br>
-            I love you infinite!
-        </p>
-        <img class="gif" src="https://media.giphy.com/media/T86i6yDyOYz7J6dPhf/giphy.gif">
-    `;
-    // Extra hearts on success
-    setInterval(() => {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.innerHTML = '💍';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = '3s';
-        document.getElementById('hearts-container').appendChild(heart);
-    }, 100);
-};
+    // Generate random position
+    const randomX = Math.max(10, Math.random() * maxWidth);
+    const randomY = Math.max(10, Math.random() * maxHeight);
 
-// --- Mobile Optimized "No" Button Logic ---
-const moveButton = (e) => {
-    // Prevent default touch actions (scrolling/clicking)
-    if(e) e.preventDefault();
-    
-    // Get screen dimensions minus button size and padding
-    const buttonWidth = noBtn.offsetWidth;
-    const buttonHeight = noBtn.offsetHeight;
-    
-    // Calculate Safe Area (stay within screen)
-    const maxX = window.innerWidth - buttonWidth - 20;
-    const maxY = window.innerHeight - buttonHeight - 20;
-    
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-    
-    // Switch to fixed to break out of the container layout
+    // Apply fixed positioning to break out of the container
     noBtn.style.position = "fixed";
-    noBtn.style.left = `${Math.max(10, x)}px`; // Ensure it doesn't go off left edge
-    noBtn.style.top = `${Math.max(10, y)}px`;  // Ensure it doesn't go off top edge
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
 };
 
-// Desktop Hover
-noBtn.onmouseover = moveButton;
+// Mobile Touch Trigger
+noBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // Stop the click from happening immediately
+    moveButton();
+});
 
-// Mobile Touch - Use 'touchstart' for instant reaction
-noBtn.addEventListener('touchstart', moveButton, { passive: false });
-// Backup for some Androids
-noBtn.onclick = moveButton; 
+// Desktop Hover Trigger
+noBtn.addEventListener('mouseover', () => {
+    moveButton();
+});
+
+// The "Click" Trap - If she manages to click it, Taunt her!
+noBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    // Show Taunt
+    alert(taunts[tauntIndex % taunts.length]);
+    tauntIndex++;
+    
+    // Move immediately after alert closes
+    moveButton();
+});
+
+// 5. "Yes" Button Success
+yesBtn.onclick = () => {
+    // Clear container and show success message
+    document.querySelector('.container').innerHTML = `
+        <div class="success-content">
+            <h1 style="color: #ff3b6f; font-size: 30px;">SHE SAID YES! 💍😭</h1>
+            <p style="font-size: 18px; color: #333; margin: 15px 0;">
+                Locking this deal forever! ❤️<br>
+                No returns, no exchanges!<br>
+                <b>I love you infinite!</b>
+            </p>
+            <img style="width: 100%; border-radius: 15px; margin-top: 10px;" 
+                 src="https://media.giphy.com/media/T86i6yDyOYz7J6dPhf/giphy.gif">
+        </div>
+    `;
+    
+    // Explosion of hearts
+    setInterval(createHearts, 100);
+};
 
 </script>
 
 </body>
 </html>
+
