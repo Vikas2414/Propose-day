@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propose Day 💍</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    /* A more magical, golden-hour sunset gradient for Propose Day */
+    background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 25px;
+    width: 85%;
+    max-width: 400px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+h1 {
+    color: #6a11cb;
+    margin-bottom: 15px;
+    font-size: 28px;
+}
+
+button {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 10px;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+#startBtn {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: white;
+    box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+}
+
+#yesBtn {
+    background: #28a745;
+    color: white;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+#noBtn {
+    background: #dc3545;
+    color: white;
+    position: absolute; /* Allows it to move freely */
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
+.hidden {
+    display: none;
+}
+
+.message {
+    font-size: 17px;
+    color: #333;
+    min-height: 120px;
+    white-space: pre-line; 
+    line-height: 1.6;
+    text-align: left;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    border: 1px solid #e9ecef;
+}
+
+.gif {
+    width: 100%;
+    border-radius: 15px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Floating Hearts Background Animation */
+.heart {
+    position: absolute;
+    color: #fff;
+    opacity: 0.5;
+    animation: float 6s linear infinite;
+    z-index: 1;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+    50% { opacity: 0.8; }
+    100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<iframe id="music" width="0" height="0"
+src="https://www.youtube.com/embed/Fw07eO22H2A?start=0&loop=1&playlist=Fw07eO22H2A"
+frameborder="0" allow="autoplay">
+</iframe>
+
+<div id="hearts-container"></div>
+
+<div class="container">
+    <h1>💍 A Question... 💍</h1>
+
+    <button id="startBtn">Tap to Open 💌</button>
+
+    <div id="content" class="hidden">
+        <p class="message" id="typingText"></p>
+
+        <img class="gif" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
+
+        <div style="position: relative; height: 80px;"> 
+            <button id="yesBtn">Yes, Forever! 💍</button>
+            <button id="noBtn">No way 🙈</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const startBtn = document.getElementById("startBtn");
+const content = document.getElementById("content");
+const typingText = document.getElementById("typingText");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+
+// Background hearts effect
+function createHearts() {
+    const container = document.getElementById('hearts-container');
+    for(let i=0; i<15; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+        container.appendChild(heart);
+    }
+}
+createHearts();
+
+// PROPOSE DAY MESSAGE
+const message = 
+`My Dearest Ras Malai ❤️
+
+Yesterday was about the rose,
+but today is about the heart that holds it.
+
+I don't just want to be your memory,
+I want to be your future.
+I don't just want to hold your hand,
+I want to hold your heart.
+
+Na chahat hai sitaron ki,
+Na tamanna hai nazaron ki,
+Bas ek hi dua hai in hothon pe,
+Ki tu ban jaye kismat hamari... ✨
+
+Viku is asking you formally...
+Will you be mine? 💍`;
+
+let index = 0;
+
+startBtn.onclick = () => {
+    content.classList.remove("hidden");
+    startBtn.style.display = "none";
+    // Try to unmute/play video on interaction if browser blocked autoplay
+    document.querySelector('iframe').src += "&autoplay=1";
+    typeEffect();
+};
+
+function typeEffect() {
+    if (index < message.length) {
+        typingText.innerHTML += message.charAt(index);
+        index++;
+        setTimeout(typeEffect, 40); 
+    }
+}
+
+yesBtn.onclick = () => {
+    content.innerHTML = `
+        <h1 style="font-size: 28px; color: #ff3b6f;">SHE SAID YES! 💍😭</h1>
+        <p class="message" style="text-align: center; font-weight: bold;">
+            Locking this deal forever! ❤️<br>
+            No returns, no exchanges!<br>
+            I love you infinite!
+        </p>
+        <img class="gif" src="https://media.giphy.com/media/T86i6yDyOYz7J6dPhf/giphy.gif">
+    `;
+    
+    // Confetti effect (simple version using hearts)
+    setInterval(createHearts, 300);
+};
+
+// The tricky "No" button logic
+const moveButton = () => {
+    const x = Math.random() * (window.innerWidth - 150);
+    const y = Math.random() * (window.innerHeight - 150);
+    
+    noBtn.style.position = "fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+};
+
+// Works on Desktop (Mouse)
+noBtn.onmouseover = moveButton;
+
+// Works on Mobile (Touch) - crucial!
+noBtn.ontouchstart = (e) => {
+    e.preventDefault(); // Prevents clicking
+    moveButton();
+};
+
+</script>
+
+</body>
+</html>
