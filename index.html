@@ -14,15 +14,14 @@
     body {
         margin: 0;
         padding: 0;
-        /* Dynamic Height for Mobile Browsers */
-        min-height: 100vh;
-        min-height: 100dvh; 
+        height: 100vh;
+        height: 100dvh; /* Mobile viewport fix */
         background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
         font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden; /* Prevents scrollbars when button moves */
+        overflow: hidden; /* LOCKS THE PAGE SCROLL */
     }
 
     /* Floating Hearts Background */
@@ -34,7 +33,6 @@
         height: 100%;
         pointer-events: none;
         z-index: 0;
-        overflow: hidden;
     }
 
     .heart-bg {
@@ -52,44 +50,102 @@
 
     /* Main Card */
     .container {
-        background: rgba(255, 255, 255, 0.92);
+        background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
-        padding: 25px 20px;
+        padding: 20px;
         border-radius: 20px;
         width: 90%;
         max-width: 380px;
+        /* Ensure card fits on small screens without scrolling the body */
+        max-height: 90vh; 
+        display: flex;
+        flex-direction: column;
         box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         text-align: center;
         position: relative;
         z-index: 10;
-        transition: height 0.3s ease;
     }
 
     h1 {
         color: #ff4d6d;
-        margin: 0 0 15px 0;
-        font-size: 26px;
+        margin: 0 0 10px 0;
+        font-size: 24px;
         font-weight: 700;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        flex-shrink: 0; /* Keeps title from shrinking */
     }
 
-    /* Buttons */
+    /* THE SCROLLABLE LETTER BOX */
+    .message-box {
+        background: #fff0f3;
+        border: 1px solid #ffccd5;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 10px;
+        text-align: left;
+        font-size: 16px;
+        color: #444;
+        line-height: 1.5;
+        white-space: pre-line; 
+        
+        /* THIS CREATES THE SCROLL */
+        overflow-y: auto; 
+        max-height: 35vh; /* Takes up 35% of screen height max */
+        min-height: 100px;
+        
+        /* Smooth scrolling */
+        scroll-behavior: smooth;
+    }
+
+    /* Custom Scrollbar for style */
+    .message-box::-webkit-scrollbar {
+        width: 6px;
+    }
+    .message-box::-webkit-scrollbar-track {
+        background: #fff0f3;
+    }
+    .message-box::-webkit-scrollbar-thumb {
+        background: #ffb3c1; 
+        border-radius: 10px;
+    }
+
+    /* Image Container */
+    .gif-container {
+        width: 100%;
+        height: 150px; /* Fixed height for image area */
+        flex-shrink: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f0f0f0;
+    }
+    
+    .gif-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Buttons Area */
     .btn-group {
-        position: relative;
-        margin-top: 15px;
-        height: 60px; /* Space for buttons */
+        width: 100%;
+        height: 50px;
         display: flex;
         justify-content: center;
         gap: 15px;
+        flex-shrink: 0;
+        position: relative; /* Anchor for absolute positioning if needed */
     }
 
     button {
-        padding: 12px 24px;
+        padding: 10px 24px;
         border: none;
         border-radius: 50px;
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 700;
         cursor: pointer;
         transition: transform 0.2s, box-shadow 0.2s;
         -webkit-tap-highlight-color: transparent;
@@ -120,53 +176,11 @@
         background: #eb3b5a;
         color: white;
         box-shadow: 0 4px 10px rgba(235, 59, 90, 0.3);
-        transition: all 0.2s ease; /* Smooth movement */
-        position: absolute;
-        z-index: 30;
+        position: absolute; /* Allows it to fly freely */
+        z-index: 100; /* Must be on top */
     }
 
-    /* Message Styling */
-    .hidden {
-        display: none;
-    }
-
-    .message {
-        font-size: 16px;
-        color: #444;
-        background: #fff0f3;
-        padding: 15px;
-        border-radius: 12px;
-        border: 1px solid #ffccd5;
-        text-align: left;
-        line-height: 1.5;
-        white-space: pre-line; /* Preserves newlines in your poem */
-        min-height: 150px;
-        margin-bottom: 10px;
-    }
-
-    .gif-container {
-        width: 100%;
-        border-radius: 12px;
-        overflow: hidden;
-        margin-bottom: 15px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    
-    .gif-container img {
-        width: 100%;
-        height: auto;
-        display: block;
-    }
-
-    /* Success Animation */
-    @keyframes pop {
-        0% { transform: scale(0.8); opacity: 0; }
-        100% { transform: scale(1); opacity: 1; }
-    }
-    
-    .success-content {
-        animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
+    .hidden { display: none; }
 
 </style>
 </head>
@@ -174,16 +188,16 @@
 <body>
 
 <iframe id="music" allow="autoplay" style="display:none"></iframe>
-
 <div id="hearts-container"></div>
 
 <div class="container">
-    <h1 id="mainTitle">💍 A Question For You...</h1>
+    <h1 id="mainTitle">💍 A Question...</h1>
 
     <button id="startBtn">Open Letter 💌</button>
 
-    <div id="content" class="hidden">
-        <div class="message" id="typingText"></div>
+    <div id="content" class="hidden" style="width: 100%; display: flex; flex-direction: column;">
+        
+        <div class="message-box" id="typingText"></div>
 
         <div class="gif-container">
             <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="Cute Proposal">
@@ -205,7 +219,6 @@ const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const musicFrame = document.getElementById("music");
 
-// YOUR MESSAGE (Do not change)
 const message = 
 `My Dearest Ras Malai ❤️
 
@@ -225,20 +238,19 @@ Ki tu ban jaye kismat hamari... ✨
 Viku is asking you formally...
 Will you be mine? 💍`;
 
-// POP-UP TAUNTS (When she tries to click No)
 const taunts = [
     "Socha tha 'No' milega? 😂",
     "Yesterday was enough drama, Aaj sirf YES! 😤",
     "Haath dukh jayenge par button nahi dabega! 😜",
     "Viku doesn't take No for an answer today! 😎",
     "Arey maan bhi jao ab! ❤️",
-    "Error 404: 'No' option not found! 💍"
+    "Error 404: 'No' option not found! 💍",
+    "Try harder! 🤪"
 ];
 let tauntIndex = 0;
 
 // --- FUNCTIONS ---
 
-// 1. Background Animation
 function createHearts() {
     const container = document.getElementById('hearts-container');
     const heart = document.createElement('div');
@@ -248,89 +260,82 @@ function createHearts() {
     heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
     heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
     container.appendChild(heart);
-    
     setTimeout(() => { heart.remove(); }, 6000);
 }
 setInterval(createHearts, 400);
 
-// 2. Typing Effect
+// Typing Effect with Auto-Scroll
 let charIndex = 0;
 function typeEffect() {
     if (charIndex < message.length) {
         typingText.textContent += message.charAt(charIndex);
         charIndex++;
+        
+        // Auto-scroll to the bottom of the message box
+        typingText.scrollTop = typingText.scrollHeight;
+        
         setTimeout(typeEffect, 35); 
     }
 }
 
-// 3. Start Interaction
 startBtn.onclick = () => {
     startBtn.style.display = "none";
+    content.style.display = "flex"; // Ensure flex display
     content.classList.remove("hidden");
     document.getElementById("mainTitle").innerText = "For My Love ❤️";
     
-    // Attempt to play music
+    // Attempt Music
     musicFrame.src = "https://www.youtube.com/embed/Fw07eO22H2A?autoplay=1&loop=1&playlist=Fw07eO22H2A";
     
     typeEffect();
 };
 
-// 4. "No" Button Logic (The Trap)
+// "No" Button Logic
 const moveButton = () => {
-    // Get viewport dimensions
-    const maxWidth = window.innerWidth - noBtn.offsetWidth - 20; // 20px padding
+    // Get viewport dimensions (Use entire screen)
+    const maxWidth = window.innerWidth - noBtn.offsetWidth - 20; 
     const maxHeight = window.innerHeight - noBtn.offsetHeight - 20;
 
-    // Generate random position
     const randomX = Math.max(10, Math.random() * maxWidth);
     const randomY = Math.max(10, Math.random() * maxHeight);
 
-    // Apply fixed positioning to break out of the container
-    noBtn.style.position = "fixed";
+    noBtn.style.position = "fixed"; // Fixed to screen, not container
     noBtn.style.left = randomX + "px";
     noBtn.style.top = randomY + "px";
 };
 
-// Mobile Touch Trigger
+// Mobile Touch
 noBtn.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Stop the click from happening immediately
+    e.preventDefault();
     moveButton();
 });
 
-// Desktop Hover Trigger
+// Desktop Hover
 noBtn.addEventListener('mouseover', () => {
     moveButton();
 });
 
-// The "Click" Trap - If she manages to click it, Taunt her!
+// Click/Tap Trap (Taunts)
 noBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    
-    // Show Taunt
     alert(taunts[tauntIndex % taunts.length]);
     tauntIndex++;
-    
-    // Move immediately after alert closes
     moveButton();
 });
 
-// 5. "Yes" Button Success
 yesBtn.onclick = () => {
-    // Clear container and show success message
     document.querySelector('.container').innerHTML = `
-        <div class="success-content">
-            <h1 style="color: #ff3b6f; font-size: 30px;">SHE SAID YES! 💍😭</h1>
-            <p style="font-size: 18px; color: #333; margin: 15px 0;">
+        <div style="animation: pop 0.5s ease;">
+            <h1 style="color: #ff3b6f; font-size: 28px;">SHE SAID YES! 💍😭</h1>
+            <p style="font-size: 16px; color: #333; margin: 15px 0; line-height: 1.5;">
                 Locking this deal forever! ❤️<br>
                 No returns, no exchanges!<br>
                 <b>I love you infinite!</b>
             </p>
-            <img style="width: 100%; border-radius: 15px; margin-top: 10px;" 
+            <img style="width: 100%; border-radius: 12px;" 
                  src="https://media.giphy.com/media/T86i6yDyOYz7J6dPhf/giphy.gif">
         </div>
     `;
-    
-    // Explosion of hearts
     setInterval(createHearts, 100);
 };
 
@@ -338,4 +343,3 @@ yesBtn.onclick = () => {
 
 </body>
 </html>
-
