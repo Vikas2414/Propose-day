@@ -72,13 +72,11 @@
         line-height: 1.5;
         white-space: pre-line;
         overflow-y: auto;       /* Enables Scroll */
-        max-height: 30vh;       /* Limits height so page fits */
+        max-height: 35vh;       /* Limits height */
         scroll-behavior: smooth;
     }
     
-    /* Scrollbar styling */
-    .message-box::-webkit-scrollbar { width: 5px; }
-    .message-box::-webkit-scrollbar-track { background: transparent; }
+    .message-box::-webkit-scrollbar { width: 4px; }
     .message-box::-webkit-scrollbar-thumb { background: #ffb3c1; border-radius: 10px; }
 
     /* --- GIF AREA --- */
@@ -97,20 +95,22 @@
     /* --- BUTTONS --- */
     .btn-group {
         display: flex;
-        justify-content: space-between; /* Side by side */
-        gap: 10px;
+        justify-content: center;
+        gap: 15px;
         width: 100%;
+        position: relative;
+        min-height: 50px; /* Maintains height even if button leaves */
     }
 
     button {
-        padding: 12px 0;
+        padding: 12px 20px;
         border: none;
         border-radius: 50px;
         font-size: 16px;
         font-weight: 700;
         cursor: pointer;
         transition: transform 0.2s;
-        width: 48%; /* Each button takes almost half width */
+        min-width: 100px;
         -webkit-tap-highlight-color: transparent;
     }
     
@@ -135,8 +135,8 @@
         color: white;
         box-shadow: 0 4px 10px rgba(235, 59, 90, 0.3);
         z-index: 100;
-        position: relative; /* CRITICAL: Starts in normal position */
-        transition: top 0.1s, left 0.1s;
+        position: relative; /* Initially relative */
+        transition: top 0.3s ease, left 0.3s ease; /* Smooth glide */
     }
 
     .hidden { display: none !important; }
@@ -242,34 +242,37 @@ startBtn.onclick = () => {
 
 // --- NO BUTTON LOGIC (The Taunt System) ---
 function runAway() {
-    // 1. Calculate safe random position within viewport
-    const maxWidth = window.innerWidth - noBtn.offsetWidth - 20;
-    const maxHeight = window.innerHeight - noBtn.offsetHeight - 20;
+    // Get visible viewport dimensions
+    const maxX = window.innerWidth - noBtn.offsetWidth - 30; // 30px buffer
+    const maxY = window.innerHeight - noBtn.offsetHeight - 30;
     
-    const randomX = Math.max(10, Math.random() * maxWidth);
-    const randomY = Math.max(10, Math.random() * maxHeight);
+    // Ensure we don't go negative (off top/left)
+    const randomX = Math.max(20, Math.random() * maxX);
+    const randomY = Math.max(20, Math.random() * maxY);
 
-    // 2. Apply Fixed Position (Teleport)
+    // Switch to fixed position to teleport anywhere on screen
     noBtn.style.position = "fixed"; 
     noBtn.style.left = randomX + "px";
     noBtn.style.top = randomY + "px";
 }
 
-// Trigger for Desktop (Hover)
+// DESKTOP: Hover dodge (Standard)
 noBtn.addEventListener('mouseover', () => {
-    runAway();
+    // Only dodge on desktop hover. On mobile, we let them click.
+    if (!('ontouchstart' in window)) {
+        runAway();
+    }
 });
 
-// Trigger for Mobile (Touch/Click)
-// We use 'click' so the alert actually fires before the move
+// MOBILE & CLICK: The Taunt
 noBtn.addEventListener('click', (e) => {
     e.preventDefault();
     
-    // 1. TAUNT HER (Pop-up)
+    // 1. Show the Taunt FIRST
     alert(taunts[tauntIndex % taunts.length]);
     tauntIndex++;
     
-    // 2. RUN AWAY AFTER SHE CLOSES ALERT
+    // 2. THEN run away
     runAway();
 });
 
