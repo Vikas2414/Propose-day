@@ -6,139 +6,156 @@
 <title>Propose Day 💍</title>
 
 <style>
-/* Removes the blue tap box on Android/iOS */
+/* Reset and Base Styles */
 * {
-    -webkit-tap-highlight-color: transparent;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* Removes blue tap box on Android/iOS */
 }
 
 body {
     margin: 0;
-    /* dvh handles the mobile address bar appearing/disappearing */
-    height: 100dvh; 
-    background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
-    font-family: 'Segoe UI', sans-serif;
+    padding: 0;
+    /* Fix for iPhone height issues (address bar) */
+    min-height: 100vh;
+    min-height: -webkit-fill-available; 
+    
+    /* Magical Gradient */
+    background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+    
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Prevents scrolling */
-    position: relative;
+    overflow: hidden; /* Prevents body scroll, we scroll inside container if needed */
 }
 
 .container {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(5px); /* Adds a nice glass effect on iPhones */
     padding: 25px;
-    border-radius: 25px;
-    width: 90%; /* Fits all phone widths */
-    max-width: 400px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    border-radius: 24px;
+    width: 88%;
+    max-width: 380px;
+    
+    /* Ensures content fits on small screens */
+    max-height: 90vh;
+    overflow-y: auto; 
+    
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     text-align: center;
     position: relative;
     z-index: 10;
-    transition: height 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 h1 {
     color: #6a11cb;
-    margin: 0 0 15px 0;
+    margin-top: 0;
+    margin-bottom: 12px;
     font-size: 26px;
+    letter-spacing: -0.5px;
 }
 
+/* Styled Buttons */
 button {
-    padding: 12px 25px;
+    padding: 14px 24px;
     border: none;
     border-radius: 50px;
-    font-size: 16px;
+    font-size: 17px;
     cursor: pointer;
     margin: 8px;
-    font-weight: bold;
-    touch-action: manipulation; /* Improves touch response */
+    font-weight: 700;
     transition: transform 0.1s;
+    outline: none;
+    user-select: none; /* Prevents text selection on long press */
 }
 
 button:active {
-    transform: scale(0.95);
+    transform: scale(0.96);
 }
 
 #startBtn {
     background: linear-gradient(to right, #6a11cb, #2575fc);
     color: white;
-    width: 100%; /* Full width button for easy tapping */
-    box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(106, 17, 203, 0.25);
 }
 
 #yesBtn {
     background: #28a745;
     color: white;
-    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    min-width: 120px;
 }
 
 #noBtn {
-    background: #dc3545;
+    background: #ef4444;
     color: white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    min-width: 100px;
+    /* Important: Absolute initially relative to container button-group */
     position: absolute; 
-    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
-    /* Start it next to the Yes button initially */
-    right: 20px;
-    bottom: 25px; 
+    right: 20px; 
 }
 
+/* Helper Classes */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .message {
     font-size: 16px;
-    color: #333;
+    color: #444;
     min-height: 100px;
     white-space: pre-line; 
     line-height: 1.5;
     text-align: left;
     padding: 12px;
-    background: #f8f9fa;
-    border-radius: 15px;
-    border: 1px solid #e9ecef;
-    margin-bottom: 10px;
+    background: #f3f4f6;
+    border-radius: 12px;
+    margin-bottom: 15px;
 }
 
 .gif {
     width: 100%;
-    border-radius: 15px;
-    margin-bottom: 60px; /* Extra space for buttons at bottom */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    display: block;
 }
 
-/* Button Container for Yes/No */
-.action-area {
-    width: 100%;
-    height: 60px;
+.btn-group {
     position: relative;
+    height: 60px;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
-/* Floating Hearts */
+/* Background Hearts */
 .heart {
     position: absolute;
-    color: #fff;
-    opacity: 0.5;
-    animation: float 6s linear infinite;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 20px;
+    animation: floatUp linear infinite;
     z-index: 1;
-    pointer-events: none; /* Clicks pass through hearts */
+    pointer-events: none; /* Clicks pass through */
 }
 
-@keyframes float {
-    0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-    50% { opacity: 0.8; }
-    100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+@keyframes floatUp {
+    0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
+    20% { opacity: 0.8; }
+    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<iframe id="music" width="0" height="0" frameborder="0"></iframe>
+<iframe id="music" style="display:none"
+src="https://www.youtube.com/embed/Fw07eO22H2A?enablejsapi=1"
+frameborder="0" allow="autoplay">
+</iframe>
 
 <div id="hearts-container"></div>
 
@@ -149,10 +166,10 @@ button:active {
 
     <div id="content" class="hidden">
         <p class="message" id="typingText"></p>
-        
+
         <img class="gif" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif">
 
-        <div class="action-area">
+        <div class="btn-group"> 
             <button id="yesBtn">Yes! 💍</button>
             <button id="noBtn">No 🙈</button>
         </div>
@@ -165,45 +182,51 @@ const content = document.getElementById("content");
 const typingText = document.getElementById("typingText");
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
-const iframe = document.getElementById("music");
+const musicFrame = document.getElementById("music");
 
-// Heart Animation
+// --- Heart Animation ---
 function createHearts() {
     const container = document.getElementById('hearts-container');
-    for(let i=0; i<15; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.innerHTML = '❤️';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-        heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-        container.appendChild(heart);
+    for(let i=0; i<20; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            container.appendChild(heart);
+        }, i * 200);
     }
 }
 createHearts();
 
-// Message Text
+// --- Message Config ---
 const message = 
 `My Dearest Ras Malai ❤️
 
-Yesterday was roses, today is hearts.
-I don't just want your hand,
-I want your forever.
+Yesterday was the Rose, 
+today is the Heart.
 
-Na chahat sitaron ki,
-Bas tu chahiye... ✨
+I don't just want to be your memory,
+I want to be your future.
 
-Will you be mine? 💍`;
+Na chahat hai sitaron ki,
+Na tamanna hai nazaron ki,
+Bas ek hi dua hai in hothon pe,
+Ki tu ban jaye kismat hamari... ✨
+
+Will you be mine forever? 💍`;
 
 let index = 0;
 
+// --- Interaction Logic ---
 startBtn.onclick = () => {
     content.classList.remove("hidden");
     startBtn.style.display = "none";
     
-    // iOS Safari requires user interaction to play audio. 
-    // We inject the src HERE so the browser sees it as a response to the click.
-    iframe.src = "https://www.youtube.com/embed/Fw07eO22H2A?autoplay=1&loop=1&playlist=Fw07eO22H2A";
+    // Attempt to play music by reloading iframe with autoplay on click
+    musicFrame.src = musicFrame.src + "&autoplay=1&loop=1";
     
     typeEffect();
 };
@@ -212,13 +235,14 @@ function typeEffect() {
     if (index < message.length) {
         typingText.innerHTML += message.charAt(index);
         index++;
-        setTimeout(typeEffect, 40); 
+        // Faster typing speed for mobile attention spans
+        setTimeout(typeEffect, 30); 
     }
 }
 
 yesBtn.onclick = () => {
     content.innerHTML = `
-        <h1 style="font-size: 28px; color: #ff3b6f;">SHE SAID YES! 💍😭</h1>
+        <h1 style="color: #ff3b6f;">SHE SAID YES! 💍😭</h1>
         <p class="message" style="text-align: center; font-weight: bold;">
             Locking this deal forever! ❤️<br>
             No returns, no exchanges!<br>
@@ -226,36 +250,46 @@ yesBtn.onclick = () => {
         </p>
         <img class="gif" src="https://media.giphy.com/media/T86i6yDyOYz7J6dPhf/giphy.gif">
     `;
-    setInterval(createHearts, 300);
+    // Extra hearts on success
+    setInterval(() => {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '💍';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = '3s';
+        document.getElementById('hearts-container').appendChild(heart);
+    }, 100);
 };
 
-// --- MOBILE OPTIMIZED "NO" BUTTON LOGIC ---
-
-// 1. Calculate Safe Boundaries (so button doesn't go off screen)
-const moveButton = () => {
-    // Get button dimensions
-    const btnWidth = noBtn.offsetWidth; 
-    const btnHeight = noBtn.offsetHeight;
+// --- Mobile Optimized "No" Button Logic ---
+const moveButton = (e) => {
+    // Prevent default touch actions (scrolling/clicking)
+    if(e) e.preventDefault();
     
-    // Get screen dimensions minus padding (20px)
-    const maxX = window.innerWidth - btnWidth - 20;
-    const maxY = window.innerHeight - btnHeight - 20;
-
+    // Get screen dimensions minus button size and padding
+    const buttonWidth = noBtn.offsetWidth;
+    const buttonHeight = noBtn.offsetHeight;
+    
+    // Calculate Safe Area (stay within screen)
+    const maxX = window.innerWidth - buttonWidth - 20;
+    const maxY = window.innerHeight - buttonHeight - 20;
+    
     const x = Math.random() * maxX;
     const y = Math.random() * maxY;
     
+    // Switch to fixed to break out of the container layout
     noBtn.style.position = "fixed";
-    noBtn.style.left = `${Math.max(10, x)}px`; // Ensure it doesn't hit left edge
-    noBtn.style.top = `${Math.max(10, y)}px`;  // Ensure it doesn't hit top edge
+    noBtn.style.left = `${Math.max(10, x)}px`; // Ensure it doesn't go off left edge
+    noBtn.style.top = `${Math.max(10, y)}px`;  // Ensure it doesn't go off top edge
 };
 
-// 2. Events for both Touch (Mobile) and Mouse (Desktop)
-noBtn.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Stop the 'click' from happening
-    moveButton();
-});
+// Desktop Hover
+noBtn.onmouseover = moveButton;
 
-noBtn.addEventListener('mouseover', moveButton);
+// Mobile Touch - Use 'touchstart' for instant reaction
+noBtn.addEventListener('touchstart', moveButton, { passive: false });
+// Backup for some Androids
+noBtn.onclick = moveButton; 
 
 </script>
 
